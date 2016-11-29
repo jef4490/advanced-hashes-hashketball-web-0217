@@ -13,7 +13,7 @@ def game_hash
     },
     away: {
       team_name: "Charlotte Hornets",
-      colors: ["Torquoise", "Purple"],
+      colors: ["Turquoise", "Purple"],
       players: {"Jeff Adrien" => {number: 4, shoe: 18, points: 10, rebounds: 1, assists: 1, steals: 2, blocks: 7, slam_dunks: 2},
                 "Bismak Biyombo" => {number: 0, shoe: 16, points: 12, rebounds: 4, assists: 7, steals: 7, blocks: 15, slam_dunks: 10},
                 "DeSagna Diop" => {number: 2, shoe: 14, points: 24, rebounds: 12, assists: 12, steals: 4, blocks: 5, slam_dunks: 5},
@@ -51,12 +51,57 @@ end
 def team_colors(team_name)
   colors = nil
   game_hash.each do |team, team_data|
-    if team_data[:team_name] = team_name
+    if team_data[:team_name] == team_name
       colors = team_data[:colors]
-      binding.pry
     end
   end
   colors
 end
 
-team_colors("Brooklyn Nets")
+def team_names
+  team_array = []
+  game_hash.each do |team, team_data|
+    name = team_data[:team_name]
+    team_array.push(name)
+  end
+  team_array
+end
+
+def player_numbers(team_name)
+  jersey_array = []
+  game_hash.each do |team, team_data|
+    if team_name == team_data[:team_name]
+      team_data[:players].each do |player, stats|
+        number = stats[:number]
+        jersey_array.push(number)
+      end
+    end
+  end
+  jersey_array
+end
+
+def player_stats(player)
+  stat_hash = nil
+  game_hash.each do |team, team_data|
+    if team_data[:players].has_key?(player)
+      stat_hash = team_data[:players][player]
+    end
+  end
+  stat_hash
+end
+
+def big_shoe_rebounds
+  player_name = nil
+  player_shoe = 0
+  player_rebounds = 0
+  game_hash.each do |team, team_data|
+    team_data[:players].each do |player, stats|
+      if stats[:shoe] > player_shoe
+        player_shoe = stats[:shoe]
+        player_name = player
+        player_rebounds = stats[:rebounds]
+      end
+    end
+  end
+  player_rebounds
+end
